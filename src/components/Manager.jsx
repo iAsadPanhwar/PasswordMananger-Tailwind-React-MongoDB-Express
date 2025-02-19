@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { useRef } from 'react'
 import { useEffect } from 'react'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Manager = () => {
     const ref = useRef()
@@ -15,6 +17,20 @@ const Manager = () => {
             setPasswordArray(JSON.parse(passwords))
         }
     }, [])
+
+    const copyText = (text)=>{
+        toast('Copied to clipboard!', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+        });
+        navigator.clipboard.writeText(text)
+    }
 
 
     const showPassword = () => {
@@ -33,6 +49,17 @@ const Manager = () => {
         setPasswordArray([...passwordArray, form])
         localStorage.setItem("password", JSON.stringify([...passwordArray, form]))
         console.log([...passwordArray, form])
+        setForm({ site: "", username: "", password: "" })
+        toast('Password saved!', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+        });
     }
 
     const handleChange = (e) => {
@@ -41,6 +68,22 @@ const Manager = () => {
 
     return (
         <>
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+                transition="Bounce"
+            />
+            {/* Same as */}
+            <ToastContainer />
+
             <div className="relative h-full w-full bg-white"><div className="absolute h-full bg-green-600 w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div></div>
             <div className="mycontainer">
                 <h1 className='text-4xl font-bold text-center'>
@@ -67,7 +110,7 @@ const Manager = () => {
                             colors="primary:#109173,secondary:#000000"
                         >
                         </lord-icon>
-                        Add Password</button>
+                        Save Password</button>
                 </div>
                 <div className="passwords">
                     <h2 className='font-bold text-2xl py-4'>Your Passwords</h2>
