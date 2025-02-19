@@ -3,6 +3,7 @@ import { useRef } from 'react'
 import { useEffect } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { v4 as uuidv4 } from 'uuid';
 
 const Manager = () => {
     const ref = useRef()
@@ -18,6 +19,8 @@ const Manager = () => {
         }
     }, [])
 
+    
+
     const copyText = (text)=>{
         toast('Copied to clipboard!', {
             position: "top-right",
@@ -30,6 +33,34 @@ const Manager = () => {
             theme: "dark",
         });
         navigator.clipboard.writeText(text)
+    }
+
+    const deletePassword = (id) => {
+        console.log("Deleting password with id ", id)
+        let c = confirm("Do you really want to delete this password?")
+        if(c){
+            setPasswordArray(passwordArray.filter(item=>item.id!==id))
+            localStorage.setItem("passwords", JSON.stringify(passwordArray.filter(item=>item.id!==id))) 
+            toast('Password Deleted!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+        }
+            
+    }
+
+    const editPassword = (id) => {
+         
+        console.log("Editing password with id ", id)
+        setForm(passwordArray.filter(i=>i.id===id)[0]) 
+        setPasswordArray(passwordArray.filter(item=>item.id!==id)) 
+
     }
 
 
@@ -110,7 +141,7 @@ const Manager = () => {
                             colors="primary:#109173,secondary:#000000"
                         >
                         </lord-icon>
-                        Save Password</button>
+                        Save</button>
                 </div>
                 <div className="passwords">
                     <h2 className='font-bold text-2xl py-4'>Your Passwords</h2>
