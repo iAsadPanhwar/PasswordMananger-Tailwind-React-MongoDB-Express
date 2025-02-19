@@ -77,11 +77,13 @@ const Manager = () => {
     }
 
     const savePassword = () => {
-        setPasswordArray([...passwordArray, form])
-        localStorage.setItem("password", JSON.stringify([...passwordArray, form]))
-        console.log([...passwordArray, form])
-        setForm({ site: "", username: "", password: "" })
-        toast('Password saved!', {
+        if(form.site.length >3 && form.username.length >3 &&form.password.length >3){
+
+            setPasswordArray([...passwordArray, {...form, id: uuidv4()}])
+            localStorage.setItem("passwords", JSON.stringify([...passwordArray, {...form, id: uuidv4()}]))
+            console.log([...passwordArray, form])
+            setForm({ site: "", username: "", password: "" })
+            toast('Password saved!', {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -91,6 +93,7 @@ const Manager = () => {
             progress: undefined,
             theme: "dark",
         });
+    }
     }
 
     const handleChange = (e) => {
@@ -116,18 +119,18 @@ const Manager = () => {
             <ToastContainer />
 
             <div className="relative h-full w-full bg-white"><div className="absolute h-full bg-green-600 w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div></div>
-            <div className="mycontainer">
+            <div className="p-3 md:mycontainer min-h-[88.2vh]">
                 <h1 className='text-4xl font-bold text-center'>
                     <span className="text-green-500 px-1 rounded">&lt;</span>
                     Pass
                     <span className="px-1 text-green-500 rounded">OP/&gt;</span></h1>
                 <p className='text-green-900 text-lg text-center'>Your own password Manager</p>
                 <div className="text-black flex flex-col p-4 gap-8 items-center">
-                    <input value={form.site} onChange={handleChange} placeholder='Enter Website URL' className='rounded-2xl border border-green-500 w-full p-4 py-1' type="text" name='site' />
-                    <div className="flex w-full justify-between gap-8">
-                        <input value={form.username} onChange={handleChange} placeholder='Enter Username' className='rounded-2xl border border-green-500 w-full p-4 py-1' type="text" name='username' />
+                    <input id='site' value={form.site} onChange={handleChange} placeholder='Enter Website URL' className='rounded-2xl border border-green-500 w-full p-4 py-1' type="text" name='site' />
+                    <div className="flex flex-col md:flex-row w-full justify-between gap-8">
+                        <input id='username' value={form.username} onChange={handleChange} placeholder='Enter Username' className='rounded-2xl border border-green-500 w-full p-4 py-1' type="text" name='username' />
                         <div className="relative">
-                            <input ref={passwordref} value={form.password} onChange={handleChange} placeholder='Enter Password' className='rounded-2xl border border-green-500 w-full p-4 py-1' type="password" name='password' />
+                            <input id='password' ref={passwordref} value={form.password} onChange={handleChange} placeholder='Enter Password' className='rounded-2xl border border-green-500 w-full p-4 py-1' type="password" name='password' />
                             <span onClick={showPassword} className='cursor-pointer absolute right-[6px] top-[3px]'>
                                 <img ref={ref} className='p-1' width={28} src="icons/eye.png" alt="eye" />
                             </span>
